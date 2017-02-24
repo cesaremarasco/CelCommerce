@@ -1,0 +1,7 @@
+﻿@model IEnumerable<Document>
+@using Nop.Plugin.Misc.WarehouseManagement.Domain;
+
+@foreach(Document x in Model)
+{
+    <b>@x.DocumentNumber</b>
+}

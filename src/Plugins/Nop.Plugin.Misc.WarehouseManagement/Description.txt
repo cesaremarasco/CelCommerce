@@ -1,0 +1,9 @@
+﻿Group: Administration
+FriendlyName: Warehouse Management
+SystemName: Misc.WarehouseManagement
+Version: 1.00
+SupportedVersions: 3.80
+Author: Cesare Marasco
+DisplayOrder: 1
+FileName: Nop.Plugin.Misc.WarehouseManagement.dll
+Description: This plugin allows you to manage inbound and outbound movements of products to and from Wareouses
