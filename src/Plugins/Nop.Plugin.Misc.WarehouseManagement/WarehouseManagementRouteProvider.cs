@@ -8,7 +8,26 @@ namespace Nop.Plugin.Misc.WarehouseManagement
     {
         public void RegisterRoutes(RouteCollection routes)
         {
-            routes.MapRoute("Nop.Plugin.Misc.WarehouseManagement.Documents", "wm/documents", new { controller = "MiscDocumentManagement", action = "Documents" }, new[] { "Nop.Plugin.Misc.WarehouseManagement.Controllers" });
+            routes.MapRoute("Nop.Plugin.Misc.WarehouseManagement.Documents", 
+                            "wm/documents", 
+                            new
+                            {
+                                controller = "MiscDocumentManagement",
+                                action = "Documents"
+                            }, 
+                            new[]
+                            {
+                                "Nop.Plugin.Misc.WarehouseManagement.Controllers"
+                            });
+
+            routes.MapRoute("Nop.Plugin.Misc.WarehouseManagement.DocTypes", 
+                            "wm/documents", 
+                            new
+                            {
+                                controller = "MiscDocumentManagement",
+                                action = "DocumentTypes"
+                            }, 
+                            new[] { "Nop.Plugin.Misc.WarehouseManagement.Controllers" });
         }
         public int Priority
         {

@@ -1,7 +1,77 @@
-﻿@model IEnumerable<Document>
-@using Nop.Plugin.Misc.WarehouseManagement.Domain;
-
-@foreach(Document x in Model)
+﻿@using Nop.Plugin.Misc.WarehouseManagement.Models;
+@model DocumentModel
+@using (Html.BeginForm())
 {
-    <b>@x.DocumentNumber</b>
+    @Html.AntiForgeryToken()
+<div class="content-header clearfix">
+    <h1 class="pull-left">
+        Documenti
+    </h1>
+</div>
+<div class="content">
+    <div class="form-horizontal">
+        <div class="panel-group">
+            <div class="panel panel-default panel-search">
+                <div class="panel-body">
+                    <div class="row">
+                        <div class="col-md-5">
+                            <div class="form-group">
+                                <div class="col-md-4">
+                                    @Html.NopLabelFor(model => model.StartDate)
+                                </div>
+                                <div class="col-md-8">
+                                    @Html.NopEditorFor(model => model.StartDate)
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="col-md-4">
+                                    @Html.NopLabelFor(model => model.EndDate)
+                                </div>
+                                <div class="col-md-8">
+                                    @Html.NopEditorFor(model => model.EndDate)
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-7">
+                            <div class="form-group">
+                                <div class="col-md-4">
+                                    Anagrafica
+                                </div>
+                                <div class="col-md-8">
+                                    <input type="text" id="search-customer-name" autocomplete="off" class="form-control" />
+                                    <span id="search-customer-friendly-name"></span>
+                                    <button type="button" id="search-customer-clear" class="btn bg-gray" style="display: none; margin-top: 5px;">@T("Admin.Common.Clear")</button>
+                                    @Html.TextBoxFor(model => model.CustomerId, new { autocomplete = "off", style = "display:none;" })
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script type="text/javascript">
+    $(document).ready(function() {
+        $('#search-customer-name').autocomplete({
+            delay: 500,
+            minLength: 3,
+            source: '@(Url.Action("CustomerSearchAutoComplete"))',
+            select: function(event, ui) {
+                $('#@Html.FieldIdFor(model => model.CustomerId)').val(ui.item.customerid);
+                $('#search-customer-friendly-name').text(ui.item.label);
+                $('#search-customer-clear').show();               
+                return false;
+            }
+        });
+
+        //remove button
+        $('#search-customer-clear').click(function() {
+            $('#@Html.FieldIdFor(model => model.CustomerId)').val('0');
+            $('#search-customer-friendly-name').text('');
+            $('#search-customer-clear').hide();
+            return false;
+        });
+    });
+</script>
 }

@@ -16,7 +16,12 @@ namespace Nop.Plugin.Misc.WarehouseManagement.Domain
         public DateTime? LastEmailDate { get; set; }
         public bool? Trasformed { get; set; }      
         public string State { get; set; }       
-        public string Notes { get; set; }        
-        public virtual ICollection<DocumentCustomer> Customers { get; set; }
+        public string Notes { get; set; }
+        public virtual ICollection<DocumentCustomer> Customers { get; set; }       
+        public virtual ICollection<DocumentRow> Rows { get; set; }
+        public virtual ICollection<DocumentTransformation> TrasformedFrom { get; set; }
+        public virtual ICollection<DocumentTransformation> TrasformedTo { get; set; }
+        public virtual DocumentFooter Footer { get; set; }
+        public virtual DocumentType DocumentType { get; set; }
     }
 }

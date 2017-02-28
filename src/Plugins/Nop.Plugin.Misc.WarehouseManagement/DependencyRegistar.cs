@@ -27,8 +27,8 @@ namespace Nop.Plugin.Misc.WarehouseManagement
         /// <param name="config">Config</param>
         public virtual void Register(ContainerBuilder builder, ITypeFinder typeFinder, NopConfig config)
         {
-            builder.RegisterType<DocumentService>().As<IDocumentService>().InstancePerLifetimeScope();
-           
+            builder.RegisterType<DocumentService>().As<IDocumentService>().InstancePerLifetimeScope();            
+
             this.RegisterPluginDataContext<WmDbContext>(builder, "WmDbContext");
            
             builder.RegisterType<EfRepository<Document>>()

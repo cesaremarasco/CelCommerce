@@ -86,12 +86,25 @@
     <Compile Include="Controllers\BaseController.cs" />
     <Compile Include="Controllers\MiscDocumentManagementController.cs" />
     <Compile Include="Controllers\MiscWarehouseManagementController.cs" />
-    <Compile Include="Data\DocumentCustomerMapping.cs" />
-    <Compile Include="Data\DocumentMapping.cs" />
+    <Compile Include="Data\Mappings\DocumentFooterMapping.cs" />
+    <Compile Include="Data\Mappings\DocumentRowMapping.cs" />
+    <Compile Include="Data\Mappings\DocumentCustomerMapping.cs" />
+    <Compile Include="Data\Mappings\DocumentMapping.cs" />
+    <Compile Include="Data\Mappings\DocumentTransformationMapping.cs" />
+    <Compile Include="Data\Mappings\DocumentTypeMapping.cs" />
+    <Compile Include="Data\Mappings\InOutTypeMapping.cs" />
     <Compile Include="Data\WmDbContext.cs" />
     <Compile Include="DependencyRegistar.cs" />
+    <Compile Include="Domain\CustomerSummary.cs" />
     <Compile Include="Domain\Document.cs" />
+    <Compile Include="Domain\DocumentFooter.cs" />
+    <Compile Include="Domain\DocumentRow.cs" />
     <Compile Include="Domain\DocumentCustomer.cs" />
+    <Compile Include="Domain\DocumentSummary.cs" />
+    <Compile Include="Domain\DocumentTransformation.cs" />
+    <Compile Include="Domain\DocumentType.cs" />
+    <Compile Include="Domain\InOutType.cs" />
+    <Compile Include="Models\DocumentModel.cs" />
     <Compile Include="Services\DocumentService.cs" />
     <Compile Include="Services\IDocumentService.cs" />
     <Compile Include="WarehouseManagementPlugIn.cs" />
@@ -101,8 +114,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Content\" />
-    <Folder Include="Models\" />
-    <Folder Include="Scripts\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Description.txt">
@@ -133,7 +144,18 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
+    <None Include="package.json" />
     <None Include="packages.config" />
+    <None Include="Scripts\tsconfig.json" />
+    <None Include="Views\MiscDocumentManagement\DocumentTypes.cshtml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Views\MiscDocumentManagement\DocumentType.cshtml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Views\MiscDocumentManagement\Document.cshtml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <None Include="Views\MiscDocumentManagement\Documents.cshtml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
@@ -141,9 +163,13 @@
     <Content Include="Views\_ViewStart.cshtml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <None Include="web.config">
+    <Content Include="web.config">
+      <SubType>Designer</SubType>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <TypeScriptCompile Include="Scripts\Document.ts" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

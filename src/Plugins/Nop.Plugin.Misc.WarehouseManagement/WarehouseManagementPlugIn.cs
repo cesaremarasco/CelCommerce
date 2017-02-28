@@ -39,7 +39,18 @@ namespace Nop.Plugin.Misc.WarehouseManagement
                 RouteValues = new RouteValueDictionary() { { "area", null } },
             };
 
+            var documentTypesItem = new SiteMapNode()
+            {
+                SystemName = "Document Types",
+                Title = "Document Types",
+                IconClass = "fa-book",
+                Url = "wm/doTypes",
+                Visible = true,
+                RouteValues = new RouteValueDictionary() { { "area", null } },
+            };
+
             areaItem.ChildNodes.Add(documentsItem);
+            areaItem.ChildNodes.Add(documentTypesItem);
 
             rootNode.ChildNodes.Add(areaItem);
         }

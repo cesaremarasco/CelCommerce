@@ -1,13 +1,12 @@
-﻿using Nop.Core.Domain.Customers;
+﻿using Nop.Core;
 
 namespace Nop.Plugin.Misc.WarehouseManagement.Domain
 {
-    public class DocumentCustomer
-    {
-        public int Document_Id { get; set; }
+    public class DocumentCustomer 
+        : BaseEntity
+    {     
         public int Customer_Id { get; set; }
-        public int Priority { get; set; }
-        public Customer Customer { get; set; }
-        public Document Document { get; set; }
+        public int Priority { get; set; }       
+        public Document Document { get; set; }       
     }
 }
