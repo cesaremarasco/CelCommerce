@@ -31,11 +31,27 @@
                                     @Html.NopEditorFor(model => model.EndDate)
                                 </div>
                             </div>
-                        </div>
-                        <div class="col-md-7">
                             <div class="form-group">
                                 <div class="col-md-4">
-                                    Anagrafica
+                                    @Html.NopLabelFor(model => model.NumDoc)
+                                </div>
+                                <div class="col-md-8">
+                                    @Html.NopEditorFor(model => model.NumDoc)
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-7">
+                            <div class="form-group" @(Model.AvailableDocumentTypes.SelectionIsNotPossible() ? Html.Raw("style=\"display:none\"") : null)>
+                                <div class="col-md-4">
+                                    @Html.NopLabelFor(model => model.DocumentTypeId)
+                                </div>
+                                <div class="col-md-8">
+                                    @Html.NopDropDownList("DocumentTypeId", Model.AvailableDocumentTypes)
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="col-md-4">
+                                    @Html.NopLabelFor(model => model.CustomerId)
                                 </div>
                                 <div class="col-md-8">
                                     <input type="text" id="search-customer-name" autocomplete="off" class="form-control" />
@@ -43,7 +59,7 @@
                                     <button type="button" id="search-customer-clear" class="btn bg-gray" style="display: none; margin-top: 5px;">@T("Admin.Common.Clear")</button>
                                     @Html.TextBoxFor(model => model.CustomerId, new { autocomplete = "off", style = "display:none;" })
                                 </div>
-                            </div>
+                            </div>                            
                         </div>
                     </div>
                 </div>

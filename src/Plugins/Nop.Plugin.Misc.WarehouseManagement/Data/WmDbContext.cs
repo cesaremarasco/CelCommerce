@@ -9,7 +9,6 @@ using System.Data.Entity.ModelConfiguration;
 using System.Text;
 using Nop.Core;
 using System.Collections.Generic;
-using Nop.Plugin.Misc.WarehouseManagement.Data.Mappings;
 using Nop.Data.Mapping.Customers;
 
 namespace Nop.Plugin.Misc.WarehouseManagement.Data
@@ -21,7 +20,9 @@ namespace Nop.Plugin.Misc.WarehouseManagement.Data
         public bool AutoDetectChangesEnabled { get; set; }
 
 
-        public WmDbContext(string nameOrConnectionString) : base(nameOrConnectionString) { }
+        public WmDbContext(string nameOrConnectionString) 
+            : base(nameOrConnectionString)
+        { }
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {        
@@ -29,15 +30,12 @@ namespace Nop.Plugin.Misc.WarehouseManagement.Data
             .Where(type => !string.IsNullOrEmpty(type.Namespace))
             .Where(type => type.BaseType != null && type.BaseType.IsGenericType &&
                 type.BaseType.GetGenericTypeDefinition() == typeof(EntityTypeConfiguration<>));
+
             foreach (var type in typesToRegister)
             {
                 dynamic configurationInstance = Activator.CreateInstance(type);
                 modelBuilder.Configurations.Add(configurationInstance);
-            }
-
-            modelBuilder.Configurations.Add(new GenericAttributeMap());
-            modelBuilder.Configurations.Add(new CustomerMap());
-            modelBuilder.Configurations.Add(new CustomerRoleMap());
+            }           
 
             base.OnModelCreating(modelBuilder);
         }       

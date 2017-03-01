@@ -1,6 +1,4 @@
-﻿using Nop.Core.Domain.Common;
-using Nop.Core.Domain.Customers;
-using Nop.Data;
+﻿using Nop.Data;
 using Nop.Plugin.Misc.WarehouseManagement.Data;
 using Nop.Plugin.Misc.WarehouseManagement.Domain;
 using Nop.Plugin.Misc.WarehouseManagement.Services;
@@ -24,13 +22,15 @@ namespace Nop.Plugin.Misc.WarehouseManagement.Tests.Services
             var iDocumentTypeRepository = new EfRepository<DocumentType>(contetx);
             var iDocumentFooterRepository = new EfRepository<DocumentFooter>(contetx);
             var iCustomerRepository = new EfRepository<Customer>(contetx);
+            var iCustomerRoleRepository = new EfRepository<CustomerRole>(contetx);
 
             _sut = new DocumentService(iDocRepository, 
                                        iGenericAttributeRepository, 
                                        iDocumentFooterRepository,
                                        iDocumentCustomerRepository,
                                        iDocumentTypeRepository,
-                                       iCustomerRepository);
+                                       iCustomerRepository,
+                                       iCustomerRoleRepository);
         }
 
         [Test]
@@ -44,6 +44,13 @@ namespace Nop.Plugin.Misc.WarehouseManagement.Tests.Services
         public void Should_Get_Customers_By_Search_Key()
         {
             var expectedDocuments = _sut.GetCustomerByKeyword("Cesare");
+            Assert.IsNotNull(expectedDocuments);
+        }
+
+        [Test]
+        public void Should_Get_All_Document_Types()
+        {
+            var expectedDocuments = _sut.GetAllDocumentTypes;
             Assert.IsNotNull(expectedDocuments);
         }
     }

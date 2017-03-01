@@ -20,5 +20,7 @@ namespace Nop.Plugin.Misc.WarehouseManagement.Services
 
         IEnumerable<CustomerSummary> GetCustomerByKeyword(string keyWord,
                                                           int pageSize = int.MaxValue);
+
+        IEnumerable<DocumentTypeSummary> GetAllDocumentTypes { get; }
     }
 }

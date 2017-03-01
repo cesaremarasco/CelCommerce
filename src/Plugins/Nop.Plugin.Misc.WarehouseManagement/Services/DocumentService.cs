@@ -1,10 +1,8 @@
-﻿using Nop.Plugin.Misc.WarehouseManagement.Domain;
+﻿using System;
+using Nop.Plugin.Misc.WarehouseManagement.Domain;
 using Nop.Core.Data;
-using System;
 using Nop.Core;
-using Nop.Core.Domain.Common;
 using System.Linq;
-using Nop.Core.Domain.Customers;
 using System.Collections.Generic;
 
 namespace Nop.Plugin.Misc.WarehouseManagement.Services
@@ -17,14 +15,16 @@ namespace Nop.Plugin.Misc.WarehouseManagement.Services
         private readonly IRepository<DocumentFooter> _documentFooterRepository;
         private readonly IRepository<DocumentType> _documentTypeRepository;
 
-        private readonly IRepository<Customer> _customerRepository;       
+        private readonly IRepository<Customer> _customerRepository;
+        private readonly IRepository<CustomerRole> _customerRoleRepository;
 
         public DocumentService(IRepository<Document> documentRepository,
                                IRepository<GenericAttribute> genericAttributeRepository,
                                IRepository<DocumentFooter> documentFooterRepository,
                                IRepository<DocumentCustomer> documentCustomerRepository,
                                IRepository<DocumentType> documentTypeRepository,
-                               IRepository<Customer> customerRepository)
+                               IRepository<Customer> customerRepository,
+                               IRepository<CustomerRole> customerRoleRepository)
         {
             _documentRepository = documentRepository;
             _genericAttributeRepository = genericAttributeRepository;
@@ -32,8 +32,27 @@ namespace Nop.Plugin.Misc.WarehouseManagement.Services
             _documentFooterRepository = documentFooterRepository;
             _documentTypeRepository = documentTypeRepository;
             _customerRepository = customerRepository;
+            _customerRoleRepository = customerRoleRepository;
         }
 
+        public IEnumerable<DocumentTypeSummary> GetAllDocumentTypes
+        {
+            get
+            {
+                var qry = from docTyp in _documentTypeRepository.Table
+                          join
+                          role in _customerRoleRepository.Table on docTyp.CustomerRole_Id equals role.Id
+                          select new DocumentTypeSummary()
+                          {
+                              Id = docTyp.Id,
+                              Code = docTyp.Code,
+                              Description = docTyp.Description,
+                              Role = role.Name
+                          };
+
+                return qry;
+            }
+        }
 
         public IEnumerable<CustomerSummary> GetCustomerByKeyword(string keyWord,
                                                                  int pageSize = int.MaxValue)
@@ -44,7 +63,7 @@ namespace Nop.Plugin.Misc.WarehouseManagement.Services
                            join
                            genericAttribute in _genericAttributeRepository.Table on customer.Id equals genericAttribute.EntityId
                            where genericAttribute.KeyGroup == "Customer" &&
-                                 genericAttribute.Key == SystemCustomerAttributeNames.Company &&
+                                 genericAttribute.Key == Core.Domain.Customers.SystemCustomerAttributeNames.Company &&
                                  genericAttribute.Value.ToLower().Contains(keyWord)
                            orderby genericAttribute.Value
                            select new CustomerSummary
@@ -58,7 +77,7 @@ namespace Nop.Plugin.Misc.WarehouseManagement.Services
 
 
         public IEnumerable<DocumentSummary> GetAllDocuments(string company = null, 
-                                                            string documentCode = null, 
+                                                            string docNumber = null, 
                                                             int? customerId = null, 
                                                             int? documentTypeId = null, 
                                                             bool? expiring = null, 
@@ -81,7 +100,7 @@ namespace Nop.Plugin.Misc.WarehouseManagement.Services
                         into tempLeft
                         from docFooterLeft in tempLeft.DefaultIfEmpty(null)
                         where customer.KeyGroup == "Customer" && 
-                              customer.Key == SystemCustomerAttributeNames.Company &&
+                              customer.Key == Core.Domain.Customers.SystemCustomerAttributeNames.Company &&
                               docCust.Priority == 1
                         select new DocumentSummary()
                         {
@@ -100,8 +119,8 @@ namespace Nop.Plugin.Misc.WarehouseManagement.Services
 
             if (!string.IsNullOrEmpty(company))
                 query = query.Where(x => x.Company.ToLower().Contains(company.ToLower()));
-            if (!string.IsNullOrEmpty(documentCode))
-                query = query.Where(x => x.TypeCode.ToLower().Contains(documentCode.ToLower()));
+            if (!string.IsNullOrEmpty(docNumber))
+                query = query.Where(x => x.Number.ToLower().Contains(docNumber.ToLower()));
             if(customerId != null)
                 query = query.Where(x => x.CustomerId == customerId);
             if (documentTypeId != null)
