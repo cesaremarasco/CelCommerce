@@ -15,16 +15,11 @@ using System.Reflection;
 namespace Nop.Plugin.Misc.WarehouseManagement
 {
     public class DependencyRegistrar : IDependencyRegistrar
-    {
-        /// <summary>
-        /// Register services and interfaces
-        /// </summary>
-        /// <param name="builder">Container builder</param>
-        /// <param name="typeFinder">Type finder</param>
-        /// <param name="config">Config</param>
+    {        
         public virtual void Register(ContainerBuilder builder, ITypeFinder typeFinder, NopConfig config)
         {
             builder.RegisterType<DocumentService>().As<IDocumentService>().InstancePerLifetimeScope();
+            builder.RegisterType<PrintService>().As<IPrintService>().InstancePerLifetimeScope();
 
             this.RegisterPluginDataContext<WmDbContext>(builder, "nop_object_context_warehouse_management");
 
@@ -42,10 +37,7 @@ namespace Nop.Plugin.Misc.WarehouseManagement
 
 
         }
-
-        /// <summary>
-        /// Order of this dependency registrar implementation
-        /// </summary>
+     
         public int Order
         {
             get { return 1; }

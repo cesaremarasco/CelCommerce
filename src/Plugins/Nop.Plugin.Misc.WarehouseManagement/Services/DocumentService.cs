@@ -121,9 +121,9 @@ namespace Nop.Plugin.Misc.WarehouseManagement.Services
                 query = query.Where(x => x.Company.ToLower().Contains(company.ToLower()));
             if (!string.IsNullOrEmpty(docNumber))
                 query = query.Where(x => x.Number.ToLower().Contains(docNumber.ToLower()));
-            if(customerId != null)
+            if(customerId != null && customerId != 0)
                 query = query.Where(x => x.CustomerId == customerId);
-            if (documentTypeId != null)
+            if (documentTypeId != null && documentTypeId != 0)
                 query = query.Where(x => x.TypeId == documentTypeId);
             if (expiring != null)
                 query = query.Where(x => x.EndDateValidity.HasValue &&

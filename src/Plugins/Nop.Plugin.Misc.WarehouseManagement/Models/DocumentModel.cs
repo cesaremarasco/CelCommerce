@@ -22,7 +22,9 @@ namespace Nop.Plugin.Misc.WarehouseManagement.Models
 
         public string NumDoc { get; set; }
 
-        public int DocumentTypeId { get; set; }
+        public int? DocumentTypeId { get; set; }
+
+        public string Company { get; set; }
 
         public IList<SelectListItem> AvailableDocumentTypes { get; set; }
     }

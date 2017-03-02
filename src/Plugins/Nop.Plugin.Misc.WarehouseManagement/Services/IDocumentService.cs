@@ -7,7 +7,7 @@ namespace Nop.Plugin.Misc.WarehouseManagement.Services
     public interface IDocumentService
     {       
         IEnumerable<DocumentSummary> GetAllDocuments(string company = null,
-                                                     string documentCode = null,
+                                                     string numDoc = null,
                                                      int? customerId = null,
                                                      int? documentTypeId = null,
                                                      bool? expiring = null,

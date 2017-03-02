@@ -21,13 +21,23 @@ namespace Nop.Plugin.Misc.WarehouseManagement
                             });
 
             routes.MapRoute("Nop.Plugin.Misc.WarehouseManagement.DocTypes", 
-                            "wm/documents", 
+                            "wm/doctypes", 
                             new
                             {
                                 controller = "MiscDocumentManagement",
                                 action = "DocumentTypes"
                             }, 
                             new[] { "Nop.Plugin.Misc.WarehouseManagement.Controllers" });
+
+            routes.MapRoute("Nop.Plugin.Misc.WarehouseManagement.PrintDocument",
+                         "wm/printdoc/{documentId}",
+                         new
+                         {
+                             controller = "MiscPrinter",
+                             action = "PrintDocument",
+                             documentId = UrlParameter.Optional
+                         },
+                         new[] { "Nop.Plugin.Misc.WarehouseManagement.Controllers" });
         }
         public int Priority
         {
