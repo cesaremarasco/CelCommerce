@@ -4,6 +4,7 @@ using Nop.Plugin.Misc.WarehouseManagement.Models;
 using System.Linq;
 using Nop.Services.Localization;
 using Nop.Web.Framework.Kendoui;
+using Nop.Core.Caching;
 
 namespace Nop.Plugin.Misc.WarehouseManagement.Controllers
 {
@@ -11,21 +12,22 @@ namespace Nop.Plugin.Misc.WarehouseManagement.Controllers
     {
         private IDocumentService _documentService;
         private ILocalizationService _localizationService;
+        private ICacheManager _icacheManager;       
 
         public MiscDocumentManagementController(IDocumentService documentService,
                                                 ILocalizationService localizationService)
         {
             _documentService = documentService;
-            _localizationService = localizationService;
+            _localizationService = localizationService;            
         }
                
         public ActionResult Documents()
         {
-            var model = new DocumentModel();
-            
-            model.AvailableDocumentTypes.Add(new SelectListItem { Text = _localizationService.GetResource("Admin.Common.All"), Value = "0" });
-            foreach (var w in _documentService.GetAllDocumentTypes)
-                model.AvailableDocumentTypes.Add(new SelectListItem { Text = string.Format("{0} - {1}",w.Role,w.Description), Value = w.Id.ToString() });
+            var model = new DocumentListModel()
+            {
+                LocalizedresourceAll = _localizationService.GetResource("Admin.Common.All"),
+                AvailableDocumentTypes = _documentService.GetAllDocumentTypes.ToList()
+            };          
 
             return View(RequestedViewPath, model);
         }
@@ -35,8 +37,17 @@ namespace Nop.Plugin.Misc.WarehouseManagement.Controllers
             return View(RequestedViewPath);
         }
 
+        public ActionResult CreateDocument(int idDocType)
+        {
+            var docModel = new DocumentModel(); 
+
+            docModel.Entity.DocumentType = _documentService.GetDocumentTypeById(idDocType);         
+
+            return View(LoadByViewName("Document"), docModel);
+        }
+
         [HttpPost]
-        public ActionResult DocumentList(DataSourceRequest command, DocumentModel model)
+        public ActionResult DocumentList(DataSourceRequest command, DocumentListModel model)
         {
             var result = _documentService.GetAllDocuments(model.Company,
                                                           model.NumDoc,

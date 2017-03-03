@@ -1,0 +1,60 @@
+﻿@using Nop.Plugin.Misc.WarehouseManagement.Models;
+@model DocumentModel
+
+<script>
+    $(document).ready(function() {
+        bindBootstrapTabSelectEvent('document-edit');
+    });
+</script>
+
+<div class="content">
+    <div class="form-horizontal">
+        <div id="document-edit" class="nav-tabs-custom">
+            <ul class="nav nav-tabs">
+                @Html.RenderBootstrapTabHeader("tab-info", @T("Plugin.Misc.WarehouseManagement.Document.Head"), true)
+                @Html.RenderBootstrapTabHeader("tab-products", @T("Plugin.Misc.WarehouseManagement.Document.Body"))                
+                @if (Model.Entity.DocumentType.MultipleHead)
+                {
+                    @Html.RenderBootstrapTabHeader("tab-customers", @T("Plugin.Misc.WarehouseManagement.Document.Customers"))
+                }               
+            </ul>
+            <div class="tab-content">
+                @Html.RenderBootstrapTabContent("tab-info", @TabInfo(), true)
+                @Html.RenderBootstrapTabContent("tab-products", @TabProducts())
+                @if (Model.Entity.DocumentType.MultipleHead)
+                {
+                    @Html.RenderBootstrapTabContent("tab-customers", @TabCustomers())
+                } 
+            </div>
+        </div>
+    </div>
+</div>
+@helper TabInfo()
+{
+    if (!Model.Entity.DocumentType.MultipleHead)
+    {
+        <button type="button" class="btn bg-green" data-toggle="modal" data-target="#customerFind-window">
+            <i class="fa fa-at"></i>
+            Customer
+        </button>
+    }
+}
+@helper TabProducts()
+{
+    <div></div>
+}
+@helper TabCustomers()
+{
+    <div></div>
+}
+
+<div id="customerFind-window" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="customerFind-window-title">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="sendemail-window-title">@T("Admin.Customers.Customers.SendEmail")</h4>
+            </div>           
+        </div>
+    </div>
+</div>

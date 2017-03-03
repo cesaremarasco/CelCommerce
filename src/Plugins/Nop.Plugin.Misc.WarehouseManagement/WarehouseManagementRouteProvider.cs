@@ -8,6 +8,19 @@ namespace Nop.Plugin.Misc.WarehouseManagement
     {
         public void RegisterRoutes(RouteCollection routes)
         {
+            routes.MapRoute("Nop.Plugin.Misc.WarehouseManagement.Document",
+                            "wm/ndocument/{idDocType}",
+                            new
+                            {
+                                controller = "MiscDocumentManagement",
+                                action = "CreateDocument",
+                                idDocType = UrlParameter.Optional
+                            },
+                            new[]
+                            {
+                                "Nop.Plugin.Misc.WarehouseManagement.Controllers"
+                            });
+
             routes.MapRoute("Nop.Plugin.Misc.WarehouseManagement.Documents", 
                             "wm/documents", 
                             new

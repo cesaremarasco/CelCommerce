@@ -1,6 +1,5 @@
 ﻿using System.Data.Entity;
 using Nop.Data;
-using Nop.Data.Mapping.Common;
 using System.Reflection;
 using System.Linq;
 using System;
@@ -9,7 +8,6 @@ using System.Data.Entity.ModelConfiguration;
 using System.Text;
 using Nop.Core;
 using System.Collections.Generic;
-using Nop.Data.Mapping.Customers;
 
 namespace Nop.Plugin.Misc.WarehouseManagement.Data
 {

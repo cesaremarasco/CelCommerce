@@ -4,11 +4,14 @@ using Nop.Core.Data;
 using Nop.Core;
 using System.Linq;
 using System.Collections.Generic;
+using Nop.Core.Caching;
 
 namespace Nop.Plugin.Misc.WarehouseManagement.Services
 {
     public class DocumentService : IDocumentService
     {
+        private const string DOCUMENT_TYPES = "Nop.Plugin.Misc.WarehouseManagement.DocTypes";
+
         private readonly IRepository<Document> _documentRepository;
         private readonly IRepository<GenericAttribute> _genericAttributeRepository;
         private readonly IRepository<DocumentCustomer> _documentCustomerRepository;
@@ -18,13 +21,16 @@ namespace Nop.Plugin.Misc.WarehouseManagement.Services
         private readonly IRepository<Customer> _customerRepository;
         private readonly IRepository<CustomerRole> _customerRoleRepository;
 
+        private readonly ICacheManager _cacheManager;
+
         public DocumentService(IRepository<Document> documentRepository,
                                IRepository<GenericAttribute> genericAttributeRepository,
                                IRepository<DocumentFooter> documentFooterRepository,
                                IRepository<DocumentCustomer> documentCustomerRepository,
                                IRepository<DocumentType> documentTypeRepository,
                                IRepository<Customer> customerRepository,
-                               IRepository<CustomerRole> customerRoleRepository)
+                               IRepository<CustomerRole> customerRoleRepository,
+                               ICacheManager cacheManager)
         {
             _documentRepository = documentRepository;
             _genericAttributeRepository = genericAttributeRepository;
@@ -33,24 +39,28 @@ namespace Nop.Plugin.Misc.WarehouseManagement.Services
             _documentTypeRepository = documentTypeRepository;
             _customerRepository = customerRepository;
             _customerRoleRepository = customerRoleRepository;
+            _cacheManager = cacheManager;
         }
 
         public IEnumerable<DocumentTypeSummary> GetAllDocumentTypes
         {
             get
-            {
-                var qry = from docTyp in _documentTypeRepository.Table
-                          join
-                          role in _customerRoleRepository.Table on docTyp.CustomerRole_Id equals role.Id
-                          select new DocumentTypeSummary()
-                          {
-                              Id = docTyp.Id,
-                              Code = docTyp.Code,
-                              Description = docTyp.Description,
-                              Role = role.Name
-                          };
+            {               
+                return _cacheManager.Get(DOCUMENT_TYPES, () =>
+                {
+                    var qry = from docTyp in _documentTypeRepository.Table
+                              join
+                              role in _customerRoleRepository.Table on docTyp.CustomerRole_Id equals role.Id
+                              select new DocumentTypeSummary()
+                              {
+                                  Id = docTyp.Id,
+                                  Code = docTyp.Code,
+                                  Description = docTyp.Description,
+                                  Role = role.Name
+                              };
 
-                return qry;
+                    return qry;
+                });                
             }
         }
 
@@ -92,7 +102,7 @@ namespace Nop.Plugin.Misc.WarehouseManagement.Services
                         join
                         docCust in _documentCustomerRepository.Table on doc.Id equals docCust.Id
                         join
-                        docType in _documentTypeRepository.Table on doc.Id equals docType.Id
+                        docType in _documentTypeRepository.Table on doc.DocumentType_Id equals docType.Id
                         join
                         customer in _genericAttributeRepository.Table on docCust.Customer_Id equals customer.EntityId
                         join
@@ -144,6 +154,11 @@ namespace Nop.Plugin.Misc.WarehouseManagement.Services
             var customers = new PagedList<DocumentSummary>(query, pageIndex, pageSize);
 
             return customers.Distinct();
-        }       
+        }
+
+        public DocumentType GetDocumentTypeById(int id)
+        {
+            return _documentTypeRepository.Table.FirstOrDefault(x => x.Id == id);
+        }
     }
 }

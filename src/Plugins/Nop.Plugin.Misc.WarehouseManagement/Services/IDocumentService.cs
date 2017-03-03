@@ -22,5 +22,7 @@ namespace Nop.Plugin.Misc.WarehouseManagement.Services
                                                           int pageSize = int.MaxValue);
 
         IEnumerable<DocumentTypeSummary> GetAllDocumentTypes { get; }
+
+        DocumentType GetDocumentTypeById(int id);
     }
 }
