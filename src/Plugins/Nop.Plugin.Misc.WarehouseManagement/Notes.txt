@@ -1,0 +1,1 @@
+﻿..\..\Presentation\Nop.Web\Plugins\Misc.WarehouseManagement\
