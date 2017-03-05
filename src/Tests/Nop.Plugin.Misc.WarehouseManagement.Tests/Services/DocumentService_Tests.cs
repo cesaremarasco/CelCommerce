@@ -23,6 +23,7 @@ namespace Nop.Plugin.Misc.WarehouseManagement.Tests.Services
             var iDocumentFooterRepository = new EfRepository<DocumentFooter>(contetx);
             var iCustomerRepository = new EfRepository<Customer>(contetx);
             var iCustomerRoleRepository = new EfRepository<CustomerRole>(contetx);
+            var iCacheManager = new Core.Caching.MemoryCacheManager();
 
             _sut = new DocumentService(iDocRepository, 
                                        iGenericAttributeRepository, 
@@ -30,7 +31,8 @@ namespace Nop.Plugin.Misc.WarehouseManagement.Tests.Services
                                        iDocumentCustomerRepository,
                                        iDocumentTypeRepository,
                                        iCustomerRepository,
-                                       iCustomerRoleRepository);
+                                       iCustomerRoleRepository,
+                                       iCacheManager);
         }
 
         [Test]

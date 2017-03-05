@@ -1,29 +1,20 @@
-﻿using System;
+﻿using Nop.Plugin.Misc.WarehouseManagement.Domain;
+using Nop.Web.Framework.Mvc;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Web.Mvc;
 
 namespace Nop.Plugin.Misc.WarehouseManagement.Models
 {
-    public class DocumentModel
+    public class DocumentModel : BaseNopEntityModel
     {
         public DocumentModel()
         {
-            AvailableDocumentTypes = new List<SelectListItem>();
+            Entity = new Document();
+            PaymentMethods = new List<DocumentAspectModel>();
+            ShippingProviders = new List<DocumentAspectModel>();
         }
 
-        public int? CustomerId { get; set; }
-
-        [UIHint("DateNullable")]
-        public DateTime? StartDate { get; set; }
-
-        [UIHint("DateNullable")]
-        public DateTime? EndDate { get; set; }
-
-        public string NumDoc { get; set; }
-
-        public int DocumentTypeId { get; set; }
-
-        public IList<SelectListItem> AvailableDocumentTypes { get; set; }
+        public Document Entity { get; set; }
+        public IList<DocumentAspectModel> PaymentMethods { get; set; }
+        public IList<DocumentAspectModel> ShippingProviders { get; set; }     
     }
 }

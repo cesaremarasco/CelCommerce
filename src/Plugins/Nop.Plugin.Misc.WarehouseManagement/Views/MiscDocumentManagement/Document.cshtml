@@ -1,7 +1,27 @@
-﻿@model IEnumerable<Document>
-@using Nop.Plugin.Misc.WarehouseManagement.Domain;
-
-@foreach(Document x in Model)
-{
-    <b>@x.DocumentNumber</b>
+﻿@using Nop.Plugin.Misc.WarehouseManagement.Models;
+@model DocumentModel
+@{   
+    ViewBag.Title = T("Admin.Customers.Customers.AddNew").Text;
 }
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+    <div class="content-header clearfix">
+        <h1 class="pull-left">
+           Nuovo @Model.Entity.DocumentType.Description            
+        </h1>
+        <div class="pull-right">
+            <button type="submit" name="save" class="btn bg-blue">
+                <i class="fa fa-floppy-o"></i>
+                @T("Admin.Common.Save")
+            </button>
+            <button type="submit" name="save-continue" class="btn bg-blue">
+                <i class="fa fa-floppy-o"></i>
+                @T("Admin.Common.SaveContinue")
+            </button>
+        </div>
+    </div>
+    @Html.Partial("~/Plugins/Misc.WarehouseManagement/Views/MiscDocumentManagement/_CreateOrUpdateDocument.cshtml", Model)
+}
+

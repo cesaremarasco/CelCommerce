@@ -3,29 +3,30 @@ using System.Web.Mvc;
 using Nop.Plugin.Misc.WarehouseManagement.Models;
 using System.Linq;
 using Nop.Services.Localization;
+using Nop.Web.Framework.Kendoui;
+using Nop.Core.Caching;
 
 namespace Nop.Plugin.Misc.WarehouseManagement.Controllers
 {
     public class MiscDocumentManagementController : BaseController
     {
         private IDocumentService _documentService;
-        private ILocalizationService _localizationService;
+        private ILocalizationService _localizationService; 
 
         public MiscDocumentManagementController(IDocumentService documentService,
                                                 ILocalizationService localizationService)
         {
             _documentService = documentService;
-            _localizationService = localizationService;
+            _localizationService = localizationService;            
         }
                
         public ActionResult Documents()
         {
-            var model = new DocumentModel();
-
-            //warehouses
-            model.AvailableDocumentTypes.Add(new SelectListItem { Text = _localizationService.GetResource("Admin.Common.All"), Value = "0" });
-            foreach (var w in _documentService.GetAllDocumentTypes)
-                model.AvailableDocumentTypes.Add(new SelectListItem { Text = string.Format("{0} - {1}",w.Role,w.Description), Value = w.Id.ToString() });
+            var model = new DocumentListModel()
+            {
+                LocalizedresourceAll = _localizationService.GetResource("Admin.Common.All"),
+                AvailableDocumentTypes = _documentService.GetAllDocumentTypes.ToList()
+            };          
 
             return View(RequestedViewPath, model);
         }
@@ -33,6 +34,72 @@ namespace Nop.Plugin.Misc.WarehouseManagement.Controllers
         public ActionResult DocumentTypes()
         {
             return View(RequestedViewPath);
+        }
+
+        public ActionResult EditDocument(int documentId)
+        {            
+            ViewBag.DocumentId = documentId;
+            return View(LoadByViewName("Document"));
+        }
+
+        public ActionResult NewDocument(int idDocType)
+        {
+            // Se arriva
+
+            ViewBag.DocumenId = 0;
+            ViewBag.DocumentTypeId = idDocType;
+            return View(LoadByViewName("Document"));
+        }
+
+        public ActionResult DocumentJsonPayLoad(int idDocType, int documentId)
+        {
+            if (idDocType == 0 && documentId == 0)
+                throw new System.Exception("Invalid call");
+
+            var docModel = new DocumentModel();
+
+            if (documentId == 0)
+                docModel.Entity.DocumentType = _documentService.GetDocumentTypeById(idDocType);  
+
+            return new JsonResult()
+            {
+                JsonRequestBehavior = JsonRequestBehavior.AllowGet,
+                Data = docModel
+            };
+        }
+
+        [HttpPost]
+        public ActionResult CreateDocument(DocumentModel currentDocument)
+        {
+            var currentResult = new JsonResult();
+            currentResult.JsonRequestBehavior = JsonRequestBehavior.AllowGet;
+            currentResult.Data = "Saved !";
+            return currentResult;
+        }
+
+        [HttpPost]
+        public ActionResult DocumentList(DataSourceRequest command, DocumentListModel model)
+        {
+            var result = _documentService.GetAllDocuments(model.Company,
+                                                          model.NumDoc,
+                                                          model.CustomerId,
+                                                          model.DocumentTypeId,
+                                                          null,
+                                                          null,
+                                                          model.StartDate,
+                                                          model.EndDate,
+                                                          pageIndex: command.Page - 1,
+                                                          pageSize: command.PageSize);
+
+            var gridModel = new DataSourceResult
+            {
+                Data = result
+            };
+
+            return new JsonResult
+            {
+                Data = gridModel
+            };
         }
 
         public ActionResult CustomerSearchAutoComplete(string term)

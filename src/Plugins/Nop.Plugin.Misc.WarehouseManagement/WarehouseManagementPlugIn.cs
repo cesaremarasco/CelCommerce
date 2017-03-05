@@ -1,4 +1,4 @@
-﻿using System;
+﻿using Nop.Services.Localization;
 using System.Web.Routing;
 using Nop.Core.Plugins;
 using Nop.Web.Framework.Menu;
@@ -6,7 +6,12 @@ using Nop.Web.Framework.Menu;
 namespace Nop.Plugin.Misc.WarehouseManagement
 {
     public class WarehouseManagementPlugIn : BasePlugin, IAdminMenuPlugin
-    {       
+    {
+        public WarehouseManagementPlugIn()
+        {
+            
+        }    
+
         public void GetConfigurationRoute(out string actionName, out string controllerName, out RouteValueDictionary routeValues)
         {
             actionName = "Configure";
@@ -53,6 +58,15 @@ namespace Nop.Plugin.Misc.WarehouseManagement
             areaItem.ChildNodes.Add(documentTypesItem);
 
             rootNode.ChildNodes.Add(areaItem);
+        }
+
+        public override void Install()
+        {
+            this.AddOrUpdatePluginLocaleResource("Plugin.Misc.WarehouseManagement.Document.Head", "Head");
+            this.AddOrUpdatePluginLocaleResource("Plugin.Misc.WarehouseManagement.Document.Body", "Body");
+            this.AddOrUpdatePluginLocaleResource("Plugin.Misc.WarehouseManagement.Document.Customers", "Customers");
+
+            //base.Install();
         }
     }
 }
