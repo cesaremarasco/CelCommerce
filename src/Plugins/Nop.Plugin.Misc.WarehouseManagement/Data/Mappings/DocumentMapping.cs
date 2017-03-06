@@ -19,6 +19,10 @@ namespace Nop.Plugin.Misc.WarehouseManagement.Data.Mappings
 
             HasMany(e => e.TrasformedFrom).WithRequired(e => e.FromDocument).HasForeignKey(e => e.Id).WillCascadeOnDelete(false);
             HasMany(e => e.TrasformedTo).WithRequired(e => e.ToDocument).HasForeignKey(e => e.ChildDocument_Id).WillCascadeOnDelete(false);
+
+
+            HasMany(e => e.DocumentAttributeValues).WithRequired(e => e.Wm_Document).HasForeignKey(e => e.Id).WillCascadeOnDelete(false);
+           
         }
     }
 }

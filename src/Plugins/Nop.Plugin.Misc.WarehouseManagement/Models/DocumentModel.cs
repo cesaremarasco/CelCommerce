@@ -11,6 +11,12 @@ namespace Nop.Plugin.Misc.WarehouseManagement.Models
             Entity = new Document();
             PaymentMethods = new List<DocumentAspectModel>();
             ShippingProviders = new List<DocumentAspectModel>();
+            Entity = new Document()
+            {               
+                Customers = new List<DocumentCustomer>(),
+                Footer = new DocumentFooter(),
+                Rows = new List<DocumentRow>()
+            };
         }
 
         public Document Entity { get; set; }

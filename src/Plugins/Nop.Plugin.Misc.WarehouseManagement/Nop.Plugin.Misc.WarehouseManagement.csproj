@@ -65,6 +65,8 @@
     <Reference Include="Microsoft.CSharp">
       <Private>False</Private>
     </Reference>
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.Security" />
     <Reference Include="System.Web.DynamicData">
       <Private>False</Private>
     </Reference>
@@ -449,6 +451,9 @@
     <Compile Include="Controllers\MiscWarehouseManagementController.cs" />
     <Compile Include="Data\Mappings\CustomerMapping.cs" />
     <Compile Include="Data\Mappings\CustomerRoleMapping.cs" />
+    <Compile Include="Data\Mappings\DocumentTypeAttributeMapping.cs" />
+    <Compile Include="Data\Mappings\DocumentAttributeValueMapping.cs" />
+    <Compile Include="Data\Mappings\DocumentCounterMapping.cs" />
     <Compile Include="Data\Mappings\DocumentCustomerMapping.cs" />
     <Compile Include="Data\Mappings\DocumentFooterMapping.cs" />
     <Compile Include="Data\Mappings\DocumentMapping.cs" />
@@ -463,6 +468,9 @@
     <Compile Include="Domain\CustomerRole.cs" />
     <Compile Include="Domain\CustomerSummary.cs" />
     <Compile Include="Domain\Document.cs" />
+    <Compile Include="Domain\DocumentTypeAttribute.cs" />
+    <Compile Include="Domain\DocumentAttributeValue.cs" />
+    <Compile Include="Domain\DocumentCounter.cs" />
     <Compile Include="Domain\DocumentCustomer.cs" />
     <Compile Include="Domain\DocumentFooter.cs" />
     <Compile Include="Domain\DocumentRow.cs" />
@@ -473,6 +481,7 @@
     <Compile Include="Domain\GenericAttribute.cs" />
     <Compile Include="Domain\InOutType.cs" />
     <Compile Include="Models\DocumentAspectModel.cs" />
+    <Compile Include="Models\DocumentCoreModel.cs" />
     <Compile Include="Models\DocumentFooterModel.cs" />
     <Compile Include="Models\DocumentListModel.cs" />
     <Compile Include="Models\DocumentModel.cs" />
@@ -1008,9 +1017,6 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Views\MiscDocumentManagement\DocumentTypes.cshtml">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Views\MiscDocumentManagement\_CreateOrUpdateDocument.cshtml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Views\MiscWarehouseManagement\Configure.cshtml">

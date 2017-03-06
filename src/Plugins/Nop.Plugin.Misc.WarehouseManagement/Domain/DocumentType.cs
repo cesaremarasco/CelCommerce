@@ -21,6 +21,7 @@ namespace Nop.Plugin.Misc.WarehouseManagement.Domain
         public virtual InOutType InOutType { get; set; }       
         public virtual ICollection<DocumentType> TrasformationChildDocuments { get; set; }      
         public virtual ICollection<DocumentType> TrasformationParentDocuments { get; set; }
-        
+        public virtual ICollection<DocumentTypeAttribute> DocumentAttributes { get; set; }
+
     }
 }

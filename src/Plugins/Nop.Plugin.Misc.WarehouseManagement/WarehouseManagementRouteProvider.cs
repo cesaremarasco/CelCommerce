@@ -13,13 +13,27 @@ namespace Nop.Plugin.Misc.WarehouseManagement
                             new
                             {
                                 controller = "MiscDocumentManagement",
-                                action = "CreateDocument",
+                                action = "NewDocument",
                                 idDocType = UrlParameter.Optional
                             },
                             new[]
                             {
                                 "Nop.Plugin.Misc.WarehouseManagement.Controllers"
-                            });
+                            });            
+
+            routes.MapRoute("Nop.Plugin.Misc.WarehouseManagement.DocumentJsonPayLoad",
+                           "wm/docpayload/{idDocType}/{documentId}",
+                           new
+                           {
+                               controller = "MiscDocumentManagement",
+                               action = "DocumentJsonPayLoad",
+                               idDocType = UrlParameter.Optional,
+                               documentId = UrlParameter.Optional
+                           },
+                           new[]
+                           {
+                                "Nop.Plugin.Misc.WarehouseManagement.Controllers"
+                           });
 
             routes.MapRoute("Nop.Plugin.Misc.WarehouseManagement.Documents", 
                             "wm/documents", 

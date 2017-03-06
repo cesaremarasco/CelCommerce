@@ -5,19 +5,23 @@ using System.Linq;
 using Nop.Services.Localization;
 using Nop.Web.Framework.Kendoui;
 using Nop.Core.Caching;
+using Nop.Services.Payments;
 
 namespace Nop.Plugin.Misc.WarehouseManagement.Controllers
 {
     public class MiscDocumentManagementController : BaseController
     {
         private IDocumentService _documentService;
-        private ILocalizationService _localizationService; 
+        private ILocalizationService _localizationService;
+        private IPaymentService _paymentService;
 
         public MiscDocumentManagementController(IDocumentService documentService,
-                                                ILocalizationService localizationService)
+                                                ILocalizationService localizationService,
+                                                IPaymentService paymentService)
         {
             _documentService = documentService;
-            _localizationService = localizationService;            
+            _localizationService = localizationService;
+            _paymentService = paymentService;     
         }
                
         public ActionResult Documents()
@@ -44,13 +48,15 @@ namespace Nop.Plugin.Misc.WarehouseManagement.Controllers
 
         public ActionResult NewDocument(int idDocType)
         {
-            // Se arriva
+            var model = new DocumentCoreModel()
+            {
+                DocumentType = _documentService.GetDocumentTypeById(idDocType)
+            };
 
-            ViewBag.DocumenId = 0;
-            ViewBag.DocumentTypeId = idDocType;
-            return View(LoadByViewName("Document"));
+            return View(LoadByViewName("Document"), model);
         }
 
+        [HttpGet]
         public ActionResult DocumentJsonPayLoad(int idDocType, int documentId)
         {
             if (idDocType == 0 && documentId == 0)
@@ -58,7 +64,15 @@ namespace Nop.Plugin.Misc.WarehouseManagement.Controllers
 
             var docModel = new DocumentModel();
 
-            if (documentId == 0)
+            docModel.PaymentMethods = _paymentService.LoadAllPaymentMethods()
+                                                     .Select(x => new DocumentAspectModel()
+                                                     {
+                                                         SystemName = x.PluginDescriptor.SystemName,
+                                                         Description = x.PluginDescriptor.FriendlyName
+                                                     })
+                                                     .ToList();
+
+            if (documentId != 0)
                 docModel.Entity.DocumentType = _documentService.GetDocumentTypeById(idDocType);  
 
             return new JsonResult()

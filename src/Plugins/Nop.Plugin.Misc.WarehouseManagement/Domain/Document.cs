@@ -33,6 +33,7 @@ namespace Nop.Plugin.Misc.WarehouseManagement.Domain
         public virtual ICollection<DocumentRow> Rows { get; set; }
         public virtual ICollection<DocumentTransformation> TrasformedFrom { get; set; }
         public virtual ICollection<DocumentTransformation> TrasformedTo { get; set; }
+        public virtual ICollection<DocumentAttributeValue> DocumentAttributeValues { get; set; }
         public virtual DocumentFooter Footer { get; set; }
         public virtual DocumentType DocumentType { get; set; }
     }

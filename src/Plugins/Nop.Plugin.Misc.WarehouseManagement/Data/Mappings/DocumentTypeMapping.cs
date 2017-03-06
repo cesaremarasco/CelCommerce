@@ -26,6 +26,8 @@ namespace Nop.Plugin.Misc.WarehouseManagement.Data.Mappings
                   .Map(m => m.ToTable("Wm_DocumentTypeTransformation")
                   .MapLeftKey("Id")
                   .MapRightKey("DocumentChild_Id"));
+
+            HasMany(e => e.DocumentAttributes).WithRequired(e => e.DocumentType).HasForeignKey(e => e.DocumentType_Id).WillCascadeOnDelete(false);
         }
     }
 }
