@@ -422,6 +422,9 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Notes.txt" />
+    <Content Include="Scripts\knockout-3.4.2.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Include="Scripts\PdfViewer\compatibility.js">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
@@ -481,7 +484,10 @@
     <Compile Include="Domain\GenericAttribute.cs" />
     <Compile Include="Domain\InOutType.cs" />
     <Compile Include="Models\DocumentAspectModel.cs" />
+    <Compile Include="Models\DocumentAttributeValueModel.cs" />
+    <Compile Include="Models\DocumentContainerModel.cs" />
     <Compile Include="Models\DocumentCoreModel.cs" />
+    <Compile Include="Models\DocumentCustomerModel.cs" />
     <Compile Include="Models\DocumentFooterModel.cs" />
     <Compile Include="Models\DocumentListModel.cs" />
     <Compile Include="Models\DocumentModel.cs" />

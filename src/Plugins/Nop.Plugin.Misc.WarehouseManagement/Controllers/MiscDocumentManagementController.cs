@@ -62,18 +62,20 @@ namespace Nop.Plugin.Misc.WarehouseManagement.Controllers
             if (idDocType == 0 && documentId == 0)
                 throw new System.Exception("Invalid call");
 
-            var docModel = new DocumentModel();
+            var docModel = new DocumentContainerModel();  
+            int i = 1;
 
             docModel.PaymentMethods = _paymentService.LoadAllPaymentMethods()
                                                      .Select(x => new DocumentAspectModel()
                                                      {
+                                                         Id = i++,
                                                          SystemName = x.PluginDescriptor.SystemName,
                                                          Description = x.PluginDescriptor.FriendlyName
                                                      })
                                                      .ToList();
 
             if (documentId != 0)
-                docModel.Entity.DocumentType = _documentService.GetDocumentTypeById(idDocType);  
+                docModel.Document.DocumentType_Id = idDocType;
 
             return new JsonResult()
             {

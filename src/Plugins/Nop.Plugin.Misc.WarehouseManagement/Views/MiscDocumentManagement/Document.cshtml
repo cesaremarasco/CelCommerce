@@ -1,6 +1,7 @@
 ﻿@using Nop.Plugin.Misc.WarehouseManagement.Models;
 @model DocumentCoreModel
-<div>
+<script src="~/Plugins/Misc.WarehouseManagement/Scripts/knockout-3.4.2.js"></script>
+<div id="mainContentDocument">
     <div class="content-header clearfix">
         <h1 class="pull-left">
             @if (Model.Id == 0)
@@ -56,15 +57,22 @@
                             @T("Plugin.Misc.WarehouseManagement.Document.PaymentType")
                         </div>
                         <div id="wmDocumentViewContainer" class="col-md-8">
-                            <input data-role="dropdownlist"
-                                   data-auto-bind="false"
-                                   data-value-primitive="true"
-                                   data-text-field="Description"
-                                   data-value-field="SystemName"
-                                   data-bind="value: Document.Entity.Footer.PaymentCode,
-                                                  source: Document.PaymentMethods
-                                                  }"
-                                   class="form-control" />
+                            <!-- select data-value-field="SystemName"
+                                    data-text-field="Description"
+                                    data-bind="source: Document.PaymentMethods,
+                                               value: SelectedPayment,
+                                               events: {
+                                                         change: onSelectedPaymentChanged
+                                                       }"
+                                    class="form-control"></select -->
+                            <select data-bind="options: LookupDocumentInfo.PaymentMethods,
+                                               optionsText: 'Description',
+                                               value: LookupDocumentInfo.SelectedPayment,
+                                               optionsCaption: 'Choose...',
+                                               event:{
+                                                   change:onSelectedPaymentChanged
+                                               }"
+                                    class="form-control"></select>
                         </div>
                     </div>
                 </div>
@@ -85,11 +93,18 @@ if (!Model.DocumentType.MultipleHead)
 }
     @helper TabProducts()
     {
-    <div id="productsGrid"
-         data-role="grid"
-         data-toolbar="['create']"
-         data-bind="source: productsDataSource"
-         data-columns='["Description","Qty" ,"Price","Discount, "Taxes", "Total", { "command": ["edit", "destroy"] }]' data-editable="inline"></div>
+    <div class="panel-group">
+        <div class="panel panel-default">
+            <div class="panel-body" id="productGridContainer">
+                <div id="productsGrid"
+                     data-role="grid"
+                     data-toolbar="['create']"
+                     data-bind="source: ProductsDataSource"
+                     data-columns='["Description","Qty","Price","Discount","Taxes","Total", { "command": ["edit", "destroy"] }]'
+                     data-editable="inline"></div>
+            </div>
+        </div>
+    </div>
 }
     @helper TabCustomers()
     {
@@ -137,33 +152,49 @@ if (!Model.DocumentType.MultipleHead)
                 }
             });
 
-            var productsDataSource = new kendo.data.DataSource({
-                transport: {
-                    read: function (operation) {
-                        var data = operation.data.data || [];
-                        operation.success(data);
-                    },
-                    create: function (object) {
-                        viewModel.ProductsDataSource.read({ data: viewModel.Document.Products });
-                    }
-                },
-                schema: {
-                    model: {
-                        id: "Id",
-                        fields: {
-                            ProductID: { type: "Description", editable: false, nullable: true },
-                            Qty: { type: "number" },
-                            Price: { type: "number" },
-                            Discount: { type: "number" },
-                            Total: { type: "number" },
-                        }
-                    }
-                }
-            })
-
             var viewModel = kendo.observable({
-                Document: null
+                Document: null,
+                LookupDocumentInfo:
+                {
+                    SelectedPayment:null,
+                    PaymentMethods:null,
+                    ShippingProviders:null
+                },
+                onSelectedPaymentChanged: function (e) {
+                    debugger;
+                    var selectedProduct = this.get("SelectedPayment");
+                    return kendo.stringify(selectedProduct, null, 4);
+                },
+                ProductsDataSource : new kendo.data.DataSource({
+                        transport: {
+                            read: function (operation) {
+                                debugger;
+                                var data = operation.data.data || [];
+                                operation.success(data);
+                            },
+                            create: function (object) {
+                                debugger;
+                                viewModel.ProductsDataSource.read({ data: viewModel.Document.Rows });
+                            }
+                        },
+                        batch: true,
+                        schema: {
+                            model: {
+                                id: "ProductID",
+                                fields: {
+                                    ProductID: { type: "number", editable: false, nullable: true },
+                                    Description: { type: "string" },
+                                    Qty: { type: "number" },
+                                    Price: { type: "number" },
+                                    Discount: { type: "number" },
+                                    Taxes: { type: "number" },
+                                    Total: { type: "number" },
+                                }
+                            }
+                        }
+                     })
             });
+
 
 
             $.ajax({
@@ -172,36 +203,20 @@ if (!Model.DocumentType.MultipleHead)
                 dataType: "json",
                 contentType: "application/json",
                 success: function (payLoad) {
-                    debugger;
-                    viewModel.Document = payLoad;
-                    kendo.bind($("#wmDocumentViewContainer"), viewModel); 
+                    viewModel.LookupDocumentInfo.PaymentMethods = payLoad.PaymentMethods;
+                    viewModel.LookupDocumentInfo.ShippingProviders = payLoad.ShippingProviders;
+                    viewModel.Document = kendo.observable(payLoad.Document);
+
+                    kendo.bind($("#productGridContainer"), viewModel);
+                    ko.applyBindings(viewModel,document.getElementById('wmDocumentViewContainer'));
+                    viewModel.ProductsDataSource.read({ data: viewModel.Document.Rows });
                 },
                 error: function (error) {
                     debugger;
                 }
             })
-
         });
 
-
-
-
-
-
-        @*function SaveECF() {
-    $.ajax({
-        url: '@Url.Action("SaveECFProperty", "ECFProperty", Request.RequestContext.RouteData.Values)',
-        type: 'POST',
-        traditional: true,
-        dataType: "json",
-        contentType: "application/json",
-        data: kendo.stringify({
-            propertyList:  PropertyList: $("#ECFProperty").data("kendoGrid").dataSource.view().toJSON(),
-            currency: 'USD'
-        }),
-        success: function () { window.alert('saved'); }
-    });
-}*@
     </script>
 </div>
 
