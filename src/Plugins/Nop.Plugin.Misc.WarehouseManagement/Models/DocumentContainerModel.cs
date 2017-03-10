@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 namespace Nop.Plugin.Misc.WarehouseManagement.Models
 {
@@ -8,7 +9,11 @@ namespace Nop.Plugin.Misc.WarehouseManagement.Models
         {
             PaymentMethods = new List<DocumentAspectModel>();
             ShippingProviders = new List<DocumentAspectModel>();
-            Document = new DocumentModel();            
+            Document = new DocumentModel()
+            {
+                DocumentDate = DateTime.Now,
+                RegistrationDate = DateTime.Now
+            };            
         }
         public DocumentModel Document { get; set; }
         public IList<DocumentAspectModel> PaymentMethods { get; set; }

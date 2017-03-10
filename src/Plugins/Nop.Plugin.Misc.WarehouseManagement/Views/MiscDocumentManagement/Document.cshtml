@@ -1,5 +1,5 @@
-﻿@using Nop.Plugin.Misc.WarehouseManagement.Models;
-@model DocumentCoreModel
+﻿@model DocumentCoreModel
+@using Nop.Plugin.Misc.WarehouseManagement.Models
 <script src="~/Plugins/Misc.WarehouseManagement/Scripts/knockout-3.4.2.js"></script>
 <div id="mainContentDocument">
     <div class="content-header clearfix">
@@ -51,20 +51,12 @@
     <div class="panel-group">
         <div class="panel panel-default">
             <div class="panel-body">
-                <div class="col-md-5">
+                <div class="col-md-5" id="wmDocumentViewLeftContainer">
                     <div class="form-group">
                         <div class="col-md-4">
                             @T("Plugin.Misc.WarehouseManagement.Document.PaymentType")
                         </div>
-                        <div id="wmDocumentViewContainer" class="col-md-8">
-                            <!-- select data-value-field="SystemName"
-                                    data-text-field="Description"
-                                    data-bind="source: Document.PaymentMethods,
-                                               value: SelectedPayment,
-                                               events: {
-                                                         change: onSelectedPaymentChanged
-                                                       }"
-                                    class="form-control"></select -->
+                        <div class="col-md-8">
                             <select data-bind="options: LookupDocumentInfo.PaymentMethods,
                                                optionsText: 'Description',
                                                value: LookupDocumentInfo.SelectedPayment,
@@ -76,8 +68,29 @@
                         </div>
                     </div>
                 </div>
-                <div class="col-md-7">
-
+                <div class="col-md-7" id="wmDocumentViewRightContainer">
+                    <div class="form-group">
+                        <div class="col-md-4">
+                            @T("Plugin.Misc.WarehouseManagement.Document.Date")
+                        </div>
+                        <div class="col-md-8">
+                            <input id="documentDate"
+                                   name="documentDate"
+                                   data-role="datepicker"
+                                   type="text"
+                                   class="k-input"
+                                   role="combobox"
+                                   data-bind="value:Document.DocumentDate,
+                                              events:{
+                                                  change:onDocumentDateChanged
+                                              }"
+                                   aria-expanded="false"
+                                   aria-owns="documentDate_dateview"
+                                   aria-disabled="false"
+                                   aria-readonly="false"
+                                   style="width: 100%;">
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -165,6 +178,9 @@ if (!Model.DocumentType.MultipleHead)
                     var selectedProduct = this.get("SelectedPayment");
                     return kendo.stringify(selectedProduct, null, 4);
                 },
+                onDocumentDateChanged: function (e) {
+                    debugger;
+                },
                 ProductsDataSource : new kendo.data.DataSource({
                         transport: {
                             read: function (operation) {
@@ -208,7 +224,9 @@ if (!Model.DocumentType.MultipleHead)
                     viewModel.Document = kendo.observable(payLoad.Document);
 
                     kendo.bind($("#productGridContainer"), viewModel);
-                    ko.applyBindings(viewModel,document.getElementById('wmDocumentViewContainer'));
+                    kendo.bind($("#wmDocumentViewRightContainer"), viewModel);
+
+                    ko.applyBindings(viewModel,document.getElementById('wmDocumentViewLeftContainer'));
                     viewModel.ProductsDataSource.read({ data: viewModel.Document.Rows });
                 },
                 error: function (error) {

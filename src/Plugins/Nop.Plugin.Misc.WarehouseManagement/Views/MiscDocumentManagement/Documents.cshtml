@@ -29,7 +29,7 @@
                     @foreach (var currentDocType in currentDocTypegroup)
                     {
                         <li>
-                            <a href="@Url.Action("CreateDocument","MiscDocumentManagement",new { idDocType = currentDocType.Id })">                                
+                            <a href="@Url.Action("NewDocument","MiscDocumentManagement",new { idDocType = currentDocType.Id })">                                
                                 @currentDocType.Description
                             </a>                            
                         </li>
