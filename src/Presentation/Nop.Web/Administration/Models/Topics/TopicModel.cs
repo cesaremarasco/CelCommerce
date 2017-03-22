@@ -1,15 +1,12 @@
 ﻿using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Web.Mvc;
-using FluentValidation.Attributes;
-using Nop.Admin.Validators.Topics;
 using Nop.Web.Framework;
 using Nop.Web.Framework.Localization;
 using Nop.Web.Framework.Mvc;
 
 namespace Nop.Admin.Models.Topics
 {
-    [Validator(typeof(TopicValidator))]
     public partial class TopicModel : BaseNopEntityModel, ILocalizedModel<TopicLocalizedModel>
     {
         public TopicModel()
@@ -96,7 +93,7 @@ namespace Nop.Admin.Models.Topics
         public IList<SelectListItem> AvailableStores { get; set; }
 
         //ACL (customer roles)
-        [NopResourceDisplayName("Admin.Catalog.Manufacturers.Fields.AclCustomerRoles")]
+        [NopResourceDisplayName("Admin.ContentManagement.Topics.Fields.AclCustomerRoles")]
         [UIHint("MultiSelect")]
         public IList<int> SelectedCustomerRoleIds { get; set; }
         public IList<SelectListItem> AvailableCustomerRoles { get; set; }

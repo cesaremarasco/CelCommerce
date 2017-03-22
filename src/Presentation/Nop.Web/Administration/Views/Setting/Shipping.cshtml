@@ -31,6 +31,9 @@
 
             <div class="panel-group">
                 <div class="panel panel-default">
+                    <div class="panel-heading">
+                        @T("Admin.Configuration.Settings.Shipping.BlockTitle.Common")
+                    </div>
                     <div class="panel-body">
                         <div class="form-group">
                             <div class="col-md-3">
@@ -92,6 +95,70 @@
                                 @Html.ValidationMessageFor(model => model.FreeShippingOverXIncludingTax)
                             </div>
                         </div>
+                        <div class="form-group advanced-setting">
+                            <div class="col-md-3">
+                                @Html.OverrideStoreCheckboxFor(model => model.UseWarehouseLocation_OverrideForStore, model => model.UseWarehouseLocation, Model.ActiveStoreScopeConfiguration)
+                                @Html.NopLabelFor(model => model.UseWarehouseLocation)
+                            </div>
+                            <div class="col-md-9">
+                                @Html.NopEditorFor(model => model.UseWarehouseLocation)
+                                @Html.ValidationMessageFor(model => model.UseWarehouseLocation)
+                            </div>
+                        </div>
+                        <div class="form-group advanced-setting">
+                            <div class="col-md-3">
+                                @Html.OverrideStoreCheckboxFor(model => model.ConsiderAssociatedProductsDimensions_OverrideForStore, model => model.ConsiderAssociatedProductsDimensions, Model.ActiveStoreScopeConfiguration)
+                                @Html.NopLabelFor(model => model.ConsiderAssociatedProductsDimensions)
+                            </div>
+                            <div class="col-md-9">
+                                @Html.NopEditorFor(model => model.ConsiderAssociatedProductsDimensions)
+                                @Html.ValidationMessageFor(model => model.ConsiderAssociatedProductsDimensions)
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="panel panel-default advanced-setting">
+                    <div class="panel-heading">
+                        @T("Admin.Configuration.Settings.Shipping.BlockTitle.Notifications")
+                    </div>
+                    <div class="panel-body">
+                        <div class="form-group">
+                            <div class="col-md-3">
+                                @Html.OverrideStoreCheckboxFor(model => model.NotifyCustomerAboutShippingFromMultipleLocations_OverrideForStore, model => model.NotifyCustomerAboutShippingFromMultipleLocations, Model.ActiveStoreScopeConfiguration)
+                                @Html.NopLabelFor(model => model.NotifyCustomerAboutShippingFromMultipleLocations)
+                            </div>
+                            <div class="col-md-9">
+                                @Html.NopEditorFor(model => model.NotifyCustomerAboutShippingFromMultipleLocations)
+                                @Html.ValidationMessageFor(model => model.NotifyCustomerAboutShippingFromMultipleLocations)
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-md-3">
+                                @Html.OverrideStoreCheckboxFor(model => model.DisplayShipmentEventsToCustomers_OverrideForStore, model => model.DisplayShipmentEventsToCustomers, Model.ActiveStoreScopeConfiguration)
+                                @Html.NopLabelFor(model => model.DisplayShipmentEventsToCustomers)
+                            </div>
+                            <div class="col-md-9">
+                                @Html.NopEditorFor(model => model.DisplayShipmentEventsToCustomers)
+                                @Html.ValidationMessageFor(model => model.DisplayShipmentEventsToCustomers)
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-md-3">
+                                @Html.OverrideStoreCheckboxFor(model => model.DisplayShipmentEventsToStoreOwner_OverrideForStore, model => model.DisplayShipmentEventsToStoreOwner, Model.ActiveStoreScopeConfiguration)
+                                @Html.NopLabelFor(model => model.DisplayShipmentEventsToStoreOwner)
+                            </div>
+                            <div class="col-md-9">
+                                @Html.NopEditorFor(model => model.DisplayShipmentEventsToStoreOwner)
+                                @Html.ValidationMessageFor(model => model.DisplayShipmentEventsToStoreOwner)
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        @T("Admin.Configuration.Settings.Shipping.BlockTitle.Checkout")
+                    </div>
+                    <div class="panel-body">
                         <div class="form-group">
                             <div class="col-md-3">
                                 @Html.OverrideStoreCheckboxFor(model => model.EstimateShippingEnabled_OverrideForStore, model => model.EstimateShippingEnabled, Model.ActiveStoreScopeConfiguration)
@@ -100,6 +167,16 @@
                             <div class="col-md-9">
                                 @Html.NopEditorFor(model => model.EstimateShippingEnabled)
                                 @Html.ValidationMessageFor(model => model.EstimateShippingEnabled)
+                            </div>
+                        </div>
+                        <div class="form-group advanced-setting">
+                            <div class="col-md-3">
+                                @Html.OverrideStoreCheckboxFor(model => model.HideShippingTotal_OverrideForStore, model => model.HideShippingTotal, Model.ActiveStoreScopeConfiguration)
+                                @Html.NopLabelFor(model => model.HideShippingTotal)
+                            </div>
+                            <div class="col-md-9">
+                                @Html.NopEditorFor(model => model.HideShippingTotal)
+                                @Html.ValidationMessageFor(model => model.HideShippingTotal)
                             </div>
                         </div>
                         <div class="form-group advanced-setting">
@@ -114,46 +191,6 @@
                         </div>
                         <div class="form-group advanced-setting">
                             <div class="col-md-3">
-                                @Html.OverrideStoreCheckboxFor(model => model.UseWarehouseLocation_OverrideForStore, model => model.UseWarehouseLocation, Model.ActiveStoreScopeConfiguration)
-                                @Html.NopLabelFor(model => model.UseWarehouseLocation)
-                            </div>
-                            <div class="col-md-9">
-                                @Html.NopEditorFor(model => model.UseWarehouseLocation)
-                                @Html.ValidationMessageFor(model => model.UseWarehouseLocation)
-                            </div>
-                        </div>
-                        <div class="form-group advanced-setting">
-                            <div class="col-md-3">
-                                @Html.OverrideStoreCheckboxFor(model => model.NotifyCustomerAboutShippingFromMultipleLocations_OverrideForStore, model => model.NotifyCustomerAboutShippingFromMultipleLocations, Model.ActiveStoreScopeConfiguration)
-                                @Html.NopLabelFor(model => model.NotifyCustomerAboutShippingFromMultipleLocations)
-                            </div>
-                            <div class="col-md-9">
-                                @Html.NopEditorFor(model => model.NotifyCustomerAboutShippingFromMultipleLocations)
-                                @Html.ValidationMessageFor(model => model.NotifyCustomerAboutShippingFromMultipleLocations)
-                            </div>
-                        </div>
-                        <div class="form-group advanced-setting">
-                            <div class="col-md-3">
-                                @Html.OverrideStoreCheckboxFor(model => model.DisplayShipmentEventsToCustomers_OverrideForStore, model => model.DisplayShipmentEventsToCustomers, Model.ActiveStoreScopeConfiguration)
-                                @Html.NopLabelFor(model => model.DisplayShipmentEventsToCustomers)
-                            </div>
-                            <div class="col-md-9">
-                                @Html.NopEditorFor(model => model.DisplayShipmentEventsToCustomers)
-                                @Html.ValidationMessageFor(model => model.DisplayShipmentEventsToCustomers)
-                            </div>
-                        </div>
-                        <div class="form-group advanced-setting">
-                            <div class="col-md-3">
-                                @Html.OverrideStoreCheckboxFor(model => model.DisplayShipmentEventsToStoreOwner_OverrideForStore, model => model.DisplayShipmentEventsToStoreOwner, Model.ActiveStoreScopeConfiguration)
-                                @Html.NopLabelFor(model => model.DisplayShipmentEventsToStoreOwner)
-                            </div>
-                            <div class="col-md-9">
-                                @Html.NopEditorFor(model => model.DisplayShipmentEventsToStoreOwner)
-                                @Html.ValidationMessageFor(model => model.DisplayShipmentEventsToStoreOwner)
-                            </div>
-                        </div>
-                        <div class="form-group advanced-setting">
-                            <div class="col-md-3">
                                 @Html.OverrideStoreCheckboxFor(model => model.BypassShippingMethodSelectionIfOnlyOne_OverrideForStore, model => model.BypassShippingMethodSelectionIfOnlyOne, Model.ActiveStoreScopeConfiguration)
                                 @Html.NopLabelFor(model => model.BypassShippingMethodSelectionIfOnlyOne)
                             </div>
@@ -164,7 +201,7 @@
                         </div>
                     </div>
                     <script type="text/javascript">
-                        $(document).ready(function() {
+                        $(document).ready(function () {
                             $("#@Html.FieldIdFor(model => model.AllowPickUpInStore)").click(toggleAllowPickUpInStore);
                             $("#@Html.FieldIdFor(model => model.DisplayPickupPointsOnMap)").click(toggleAllowPickUpInStore);
                             $("#@Html.FieldIdFor(model => model.FreeShippingOverXEnabled)").click(toggleFreeShippingOverX);

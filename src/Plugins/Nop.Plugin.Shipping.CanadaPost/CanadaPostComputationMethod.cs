@@ -176,7 +176,7 @@ namespace Nop.Plugin.Shipping.CanadaPost
                 case "ca":
                     destinationCountry = new mailingscenarioDestinationDomestic
                     {
-                        postalcode = getShippingOptionRequest.ShippingAddress.ZipPostalCode
+                        postalcode = getShippingOptionRequest.ShippingAddress.ZipPostalCode.Replace(" ", string.Empty).ToUpperInvariant()
                     };
                     break;
                 default:
@@ -189,13 +189,22 @@ namespace Nop.Plugin.Shipping.CanadaPost
 
             var mailingScenario = new mailingscenario
             {
-                customernumber = _canadaPostSettings.CustomerNumber,
-                originpostalcode = getShippingOptionRequest.ZipPostalCodeFrom,
+                quotetype = mailingscenarioQuotetype.counter,
+                quotetypeSpecified = true,
+                originpostalcode = getShippingOptionRequest.ZipPostalCodeFrom.Replace(" ", string.Empty).ToUpperInvariant(),
                 destination = new mailingscenarioDestination
                 {
                     Item = destinationCountry
                 }
             };
+
+            //set contract customer properties
+            if (!string.IsNullOrEmpty(_canadaPostSettings.CustomerNumber))
+            {
+                mailingScenario.quotetype = mailingscenarioQuotetype.commercial;
+                mailingScenario.customernumber = _canadaPostSettings.CustomerNumber;
+                mailingScenario.contractid = !string.IsNullOrEmpty(_canadaPostSettings.ContractId) ? _canadaPostSettings.ContractId : null;
+            }
 
             //get original parcel characteristics
             decimal originalLength;
@@ -364,7 +373,7 @@ namespace Nop.Plugin.Shipping.CanadaPost
         }
         
         /// <summary>
-        /// Install plugin
+        /// Install the plugin
         /// </summary>
         public override void Install()
         {
@@ -378,16 +387,19 @@ namespace Nop.Plugin.Shipping.CanadaPost
             //locales
             this.AddOrUpdatePluginLocaleResource("Plugins.Shipping.CanadaPost.Fields.Api", "API key");
             this.AddOrUpdatePluginLocaleResource("Plugins.Shipping.CanadaPost.Fields.Api.Hint", "Specify Canada Post API key.");
+            this.AddOrUpdatePluginLocaleResource("Plugins.Shipping.CanadaPost.Fields.ContractId", "Contract ID");
+            this.AddOrUpdatePluginLocaleResource("Plugins.Shipping.CanadaPost.Fields.ContractId.Hint", "Specify contract identifier.");
             this.AddOrUpdatePluginLocaleResource("Plugins.Shipping.CanadaPost.Fields.CustomerNumber", "Customer number");
             this.AddOrUpdatePluginLocaleResource("Plugins.Shipping.CanadaPost.Fields.CustomerNumber.Hint", "Specify customer number.");
             this.AddOrUpdatePluginLocaleResource("Plugins.Shipping.CanadaPost.Fields.UseSandbox", "Use Sandbox");
             this.AddOrUpdatePluginLocaleResource("Plugins.Shipping.CanadaPost.Fields.UseSandbox.Hint", "Check to enable Sandbox (testing environment).");
+            this.AddOrUpdatePluginLocaleResource("Plugins.Shipping.CanadaPost.Instructions", "<p>To configure plugin follow one of these steps:<br />1. If you are a Canada Post commercial customer, fill Customer number, Contract ID and API key below.<br />2. If you are a Solutions for Small Business customer, specify your Customer number and API key below.<br />3. If you are a non-contracted customer or you want to use the regular price of shipping paid by customers, fill the API key field only.<br /><br /><em>Note: Canada Post gateway returns shipping price in the CAD currency, ensure that you have correctly configured exchange rate from PrimaryStoreCurrency to CAD.</em></p>");
 
             base.Install();
         }
         
         /// <summary>
-        /// Uninstall plugin
+        /// Uninstall the plugin
         /// </summary>
         public override void Uninstall()
         {
@@ -397,10 +409,13 @@ namespace Nop.Plugin.Shipping.CanadaPost
             //locales
             this.DeletePluginLocaleResource("Plugins.Shipping.CanadaPost.Fields.Api");
             this.DeletePluginLocaleResource("Plugins.Shipping.CanadaPost.Fields.Api.Hint");
+            this.DeletePluginLocaleResource("Plugins.Shipping.CanadaPost.Fields.ContractId");
+            this.DeletePluginLocaleResource("Plugins.Shipping.CanadaPost.Fields.ContractId.Hint");
             this.DeletePluginLocaleResource("Plugins.Shipping.CanadaPost.Fields.CustomerNumber");
             this.DeletePluginLocaleResource("Plugins.Shipping.CanadaPost.Fields.CustomerNumber.Hint");
             this.DeletePluginLocaleResource("Plugins.Shipping.CanadaPost.Fields.UseSandbox");
             this.DeletePluginLocaleResource("Plugins.Shipping.CanadaPost.Fields.UseSandbox.Hint");
+            this.DeletePluginLocaleResource("Plugins.Shipping.CanadaPost.Instructions");
 
             base.Uninstall();
         }
